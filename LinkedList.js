@@ -1,4 +1,4 @@
-//Running time of a LinkedIn- Big-Oh. In order to insert an element either in head or tail, or removing from head or tail it's just O(1) i.e constant time and for search it will take O(N) i.e we have to search it from the beginning to end of the list. It is a sequential search. We can say it's Linear runtime
+//Running time of a LinkedIn- Big-Oh. In order to insert an element either in head or tail, or removing from head or tail it's just O(1) i.e constant time and for search it will take O(N) i.e we have to search it from the beginning to end of the list or reverse. It is a sequential search. We can say it's Linear runtime
 
 //linkedList constructor. This is just a pointer which points to the head of a node and a tail of the node. (head=>node<=tail)
 function LinkedList(){
