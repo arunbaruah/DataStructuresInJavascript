@@ -1,44 +1,73 @@
-//Binary Search Tree
+//bst
 function BST(value){
-  this.value=value;
-  this.left=null;
-  this.right=null;
+  this.value = value;
+  this.left = null;
+  this.right =null;
 }
-
-//insert method
+//insert
 BST.prototype.insert = function(value){
- if(value <=this.value){
-     if(!this.left)
-        this.left = new BST(value);
-     else
-        this.left.insert(value);
- }
- else if(value >this.value){
-     if(!this.right)
+  if(value <=this.value){
+    if(!this.left)
+       this.left = new BST(value);
+    else
+       this.left.insert(value);
+  }
+  else if(value >this.value){
+    if(!this.right)
        this.right = new BST(value);
-     else
+    else
        this.right.insert(value);
- }
-};
-//contains method - it simply tell us if the vst contain given values
+  }
+}
+//contains
 BST.prototype.contains = function(value){
-   if(value === this.value)
-      return true;
-   else if(value < this.value){
-      if(!this.left)
-        return false;
-      else
-        return this.left.contains(value);
-   }
-   else if(value > this.value){
-      if(!this.right)
-        return false;
-      else 
-        return this.right.contains(value);
-   }
+  if(value ===this.value)
+    return true;
+  else if(value <this.value){
+    if(!this.left)
+      return false;
+    else
+     return this.left.contains(value);
+  }
+  else if(value >this.value){
+    if(!this.right)
+      return false;
+    else
+      return this.right.contains(value);
+  }
+}
+//dfs - inorder means we touch leftNode ->parentNode ->rightNode in order from least to greatest.
+BST.prototype.depthFirstTraversalInorder = function(iteratorFunc){
+  if(this.left) //left node
+     this.left.depthFirstTraversalInorder(iteratorFunc); 
+     iteratorFunc(this.value); //parent node
+  if(this.right) //right node
+     this.right.depthFirstTraversalInorder(iteratorFunc);
 };
 
-//depth first traversal - inorder from least to greatest, preorder and postorder. preorder= 1st parent ->leftbranch -> right branch. postordder=leftChild, rightChild and finally parentNode
+//dfs - preorder means we touch parentNode ->leftNode ->rightNode. This is useful to make a copy of the tree
+BST.prototype.depthFirstTraversalPreorder = function(iteratorFunc){
+  iteratorFunc(this.value); //parent node
+  
+  if(this.left) //left node
+     this.left.depthFirstTraversalInorder(iteratorFunc); 
+    
+  if(this.right) //right node
+     this.right.depthFirstTraversalInorder(iteratorFunc);
+};
+
+//dfs - postorder means we touch leftNode ->RightNode ->ParentNode. This is useful to safely delete a nodes from the binary tree because it starts at the lowest level
+BST.prototype.depthFirstTraversalPostorder = function(iteratorFunc){
+  if(this.left) //left node
+     this.left.depthFirstTraversalInorder(iteratorFunc); 
+
+  if(this.right) //right node
+     this.right.depthFirstTraversalInorder(iteratorFunc);
+
+     iteratorFunc(this.value); //parent node  
+};
+
+//We can also modify the DFS function by passing order and with a few if conditions so that we can use this single method to pass any order
 BST.prototype.depthFirstTraversal = function(iteratorFunc, order){
   if(order ==='pre-order')
      iteratorFunc(this.value);
@@ -52,6 +81,7 @@ BST.prototype.depthFirstTraversal = function(iteratorFunc, order){
     iteratorFunc(this.value);
 };
 
+//breadthFirst Search traversal - level by level search.
 BST.prototype.breadthFirstTraversal = function(iteratorfunc)
 {
   var queue =[this]; //root node of our bst
@@ -64,52 +94,25 @@ BST.prototype.breadthFirstTraversal = function(iteratorfunc)
        queue.push(treeNode.right);
 
   }
-
 }
 
-BST.prototype.getMinVal = function(){
-   if(this.left) 
-      return this.left.getMinVal();
-   else
-      return this.value;
+function log(value){
+  console.log(value);
 }
-
-BST.prototype.getMaxVal = function(){
-   if(this.right)
-     return this.right.getMaxVal();
-    else
-      return this.value;
+function logFunc(node){
+  console.log(node.value);
 }
 
 var bst = new BST(50);
-bst.insert(30);
 bst.insert(70);
-bst.insert(100);
-bst.insert(60);
-bst.insert(59);
-bst.insert(20);
-bst.insert(45);
-bst.insert(35);
-bst.insert(105);
-bst.insert(10);
-//console.log(bst.right.left.left);
-//console.log(bst.right.right);
+bst.insert(25);
+bst.insert(55);
+
+//bst.depthFirstTraversalInorder(log);
+//bst.depthFirstTraversalPreorder(log);
+//bst.depthFirstTraversalPostorder(log);
 //bst.depthFirstTraversal(log, 'post-order');
-//bst.depthFirstTraversal(log, 'pre-order');
 //bst.depthFirstTraversal(log, 'in-order');
+//bst.depthFirstTraversal(log, 'pre-order');
 
-//iteratorfunction
-function log(value){
-   console.log(value);
-}
-
-function logBST(node){
-  console.log(node.value);
-}
-//console.log(bst.contains(599));
-
-bst.breadthFirstTraversal(logBST);
-
-console.log('min value in bst ', bst.getMinVal());
-
-console.log('Max value in BST ', bst.getMaxVal());
+bst.breadthFirstTraversal(logFunc);
